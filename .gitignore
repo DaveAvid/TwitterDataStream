@@ -3,7 +3,8 @@
 db/
 target/
 logs/
-
+*/application-secrets.properties
+src/main/resources/application-secrets.properties
 
 
 
