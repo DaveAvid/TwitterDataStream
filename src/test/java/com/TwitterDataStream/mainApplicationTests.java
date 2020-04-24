@@ -1,10 +1,10 @@
-package com.TwitterDataStream.TwitterDataStream;
+package com.TwitterDataStream;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TwitterMongoApplicationTests {
+class mainApplicationTests {
 
 	@Test
 	void contextLoads() {
