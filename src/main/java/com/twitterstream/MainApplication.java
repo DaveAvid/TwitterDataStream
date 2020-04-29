@@ -9,6 +9,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
 import javax.annotation.PostConstruct;
 import java.net.InetAddress;
@@ -23,15 +26,12 @@ public class MainApplication {
 	MongoConnection mongoConnection;
 	@PostConstruct
 	public void establishTwitterStream() {
+
 		log.info("Starting Twitter Connection Stream...");
 		twitterListener.establishTwitterStreamHandler();
 		log.info("Connection Established.");
 		MongoCollection<Document> tweets = mongoConnection.getMongoDatabase().getCollection("tweets");
-		log.info("What is up:");
-		Document exampleTweet = new Document();
-		exampleTweet.append("twitter_text","test");
-		tweets.insertOne(exampleTweet);
-		log.info("???");
+
 
 	}
 	@Value("${server.port}")

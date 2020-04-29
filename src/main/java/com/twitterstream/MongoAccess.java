@@ -1,8 +1,19 @@
 //package com.twitterstream;
 //
+//import com.mongodb.client.MongoCollection;
+//import org.springframework.beans.factory.annotation.Autowired;
+//
+//import javax.swing.text.Document;
+//
 //public class MongoAccess {
+//    @Autowired
+//    MongoConnection mongoConnection;
+//
+//    MongoCollection<org.bson.Document> tweets = mongoConnection.getMongoDatabase().getCollection("tweets");
+//    MongoCollection<org.bson.Document> users = mongoConnection.getMongoDatabase().getCollection("users");
+//
 //    Document updateQuery = new Document("song", "One Sweet Day");
-//        songs.updateOne(updateQuery, new Document("$set", new Document("artist", "Mariah Carey ft. Boyz II Men")));
+//        tweets.updateOne(updateQuery, new Document("$set", new Document("artist", "Mariah Carey ft. Boyz II Men")));
 //
 //    /*
 //     * Finally we run a query which returns all the hits that spent 10

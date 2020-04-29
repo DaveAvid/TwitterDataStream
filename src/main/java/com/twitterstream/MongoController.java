@@ -11,6 +11,6 @@ public class MongoController {
     @RequestMapping("/")
     @ResponseBody
     String index(){
-        return "myNameIsDave";
+        return index();
     }
 }
