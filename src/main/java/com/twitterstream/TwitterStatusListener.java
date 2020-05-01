@@ -6,6 +6,7 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import twitter4j.*;
+
 @Slf4j
 @Component
 public class TwitterStatusListener {
@@ -20,9 +21,9 @@ public class TwitterStatusListener {
         TwitterStream twitterStream = new TwitterStreamFactory(twitterConnection.configurationBuilder().build()).getInstance().addListener(new StatusListener() {
             @Override
             public void onStatus(Status status) {
-                log.info("Received Tweet from Twitter: {}", status.getText());
+                log.info("Received Place: {}",status.getGeoLocation() );
                 tweets.insertOne(createTweetDataFromStatus(status));
-                //users.insertOne(createUserDataFromStatus(status));
+                users.insertOne(createUserDataFromStatus(status));
                 //System.out.println(status.getUser());
             }
 
@@ -57,27 +58,64 @@ public class TwitterStatusListener {
     private Document createTweetDataFromStatus(Status status) {
         Document document = new Document();
 
-          document.put("id",status.getUser().getId());
+          document.put("tweet_id", status.getId());
           document.put("tweet_text", status.getText());
-//        document.put("contributors", status.getContributors());
-//        document.put("created_at", status.getCreatedAt());
-//        document.put("tweet_id", status.getId());
-//        document.put("current_user_retweet_id", status.getCurrentUserRetweetId());
-//        document.put("display_text_range_end", status.getDisplayTextRangeEnd());
-//        document.put("display_text_range_start", status.getDisplayTextRangeStart());
-//        document.put("favorite_count", status.getFavoriteCount());
-//        //document.put("geo_location", status.getGeoLocation());
-//        document.put("in_reply_to_screen_name", status.getInReplyToScreenName());
-//        document.put("in_reply_to_status_id", status.getInReplyToStatusId());
-//        document.put("in_reply_to_user_id", status.getInReplyToUserId());
-//        document.put("language", status.getLang());
-//        //document.put("place", status.getPlace());
-//        //document.put("quoted_status", status.getQuotedStatus());
-//        document.put("quoted_status_id", status.getQuotedStatusId());
-//        //document.put("quoted_status_permalink", status.getQuotedStatusPermalink());
-//        document.put("retweet_count", status.getRetweetCount());
-//        //document.put("retweet_status", status.getRetweetedStatus());
-//        //document.put("scopes", status.getScopes());
+          if(status.getContributors() != null) {
+              for (int i = 1; i <= status.getContributors().length; i++) {
+                  document.put("contributor_" + i, status.getContributors()[i-1]);
+              }
+          }
+          document.put("created_at", status.getCreatedAt());
+          document.put("current_user_retweet_id", status.getCurrentUserRetweetId());
+          document.put("display_text_range_end", status.getDisplayTextRangeEnd());
+          document.put("display_text_range_start", status.getDisplayTextRangeStart());
+          document.put("favorite_count", status.getFavoriteCount());
+          document.put("retweet_count", status.getRetweetCount());
+          GeoLocation location  = status.getGeoLocation();
+          if(location != null) {
+            document.put("latitude", location.getLatitude());
+            document.put("longitude", location.getLongitude());
+          }
+          document.put("in_reply_to_screen_name", status.getInReplyToScreenName());
+          document.put("in_reply_to_status_id", status.getInReplyToStatusId());
+          document.put("in_reply_to_user_id", status.getInReplyToUserId());
+          document.put("language", status.getLang());
+          Place place = status.getPlace();
+          if(place != null) {
+              document.put("place_id", status.getPlace().getId());
+//              if(status.getPlace().getBoundingBoxCoordinates() != null) {
+//                  for (int i = 1; i <= status.getPlace().getBoundingBoxCoordinates().length; i++) {
+//                      document.put("contributor_" + i, status.getPlace().getBoundingBoxCoordinates()[i-1]);
+//                  }
+//              }
+              //document.put("bounding_box_coordinates", status.getPlace().getBoundingBoxCoordinates());
+              document.put("place_name", status.getPlace().getName());
+              document.put("place_url", status.getPlace().getURL());
+              document.put("bounding_box_type", status.getPlace().getBoundingBoxType());
+              //document.put("contained_within", status.getPlace().getContainedWithIn());
+              document.put("country", status.getPlace().getCountry());
+              document.put("country_code", status.getPlace().getCountryCode());
+              document.put("place_full_name", status.getPlace().getFullName());
+              //document.put("geometry_coordinates", status.getPlace().getGeometryCoordinates());
+              document.put("geometry_type", status.getPlace().getGeometryType());
+              document.put("place_type", status.getPlace().getPlaceType());
+              document.put("street_address", status.getPlace().getStreetAddress());
+          }
+//              document.put("quoted_status_is_truncated", status.getQuotedStatus());
+//              document.put("quoted_status_id", status.getQuotedStatusId());
+//              document.put("quoted_status_permalink_display_url", status.getQuotedStatusPermalink().getDisplayURL());
+//              document.put("quoted_status_permalink_end", status.getQuotedStatusPermalink().getEnd());
+//              document.put("quoted_status_permalink_expanded_url", status.getQuotedStatusPermalink().getExpandedURL());
+//              document.put("quoted_status_permalink_start", status.getQuotedStatusPermalink().getStart());
+//              document.put("quoted_status_permalink_text", status.getQuotedStatusPermalink().getText());
+//              document.put("quoted_status_permalink_url", status.getQuotedStatusPermalink().getURL());
+
+                //document.put("retweet_status", status.getRetweetedStatus());
+//        if(status.getScopes().getPlaceIds() != null) {
+//            for (int i = 1; i <= status.getScopes().getPlaceIds().length; i++) {
+//                document.put("contributor_" + i, status.getScopes().getPlaceIds()[i-1]);
+//            }
+//        }
 //        document.put("source", status.getSource());
 //        document.put("withheld_in_countries", status.getWithheldInCountries());
 //        document.put("favorited", status.isFavorited());
@@ -93,18 +131,18 @@ public class TwitterStatusListener {
     private  Document createUserDataFromStatus(Status status) {
         Document document = new Document();
 
+        document.put("user_id",status.getUser().getId());
         document.put("400x400_profile_image_url", status.getUser().get400x400ProfileImageURL());
         document.put("400x400_profile_image_url_https", status.getUser().get400x400ProfileImageURLHttps());
         document.put("bigger_profile_image_url", status.getUser().getBiggerProfileImageURL());
         document.put("bigger_profile_image_url_https", status.getUser().getBiggerProfileImageURLHttps());
         document.put("created_at", status.getUser().getCreatedAt());
         document.put("description", status.getUser().getDescription());
-        document.put("description_url_entities", status.getUser().getDescriptionURLEntities());
+        //document.put("description_url_entities", status.getUser().getDescriptionURLEntities());
         document.put("email", status.getUser().getEmail());
         document.put("favourites_count", status.getUser().getFavouritesCount());
         document.put("followers_count", status.getUser().getFollowersCount());
         document.put("friends_count", status.getUser().getFriendsCount());
-        document.put("id", status.getUser().getId());
         document.put("language", status.getUser().getLang());
         document.put("listed_count", status.getUser().getListedCount());
         document.put("location", status.getUser().getLocation());
@@ -136,7 +174,6 @@ public class TwitterStatusListener {
         document.put("statuses_count", status.getUser().getStatusesCount());
         document.put("time_zone", status.getUser().getTimeZone());
         document.put("url", status.getUser().getURL());
-        document.put("url_entity", status.getUser().getURLEntity());
         document.put("utc_offset", status.getUser().getUtcOffset());
         document.put("withheld_in_countries", status.getUser().getWithheldInCountries());
         document.put("contributors_enabled", status.getUser().isContributorsEnabled());
