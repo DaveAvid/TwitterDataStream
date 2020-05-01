@@ -81,15 +81,17 @@ public class TwitterStatusListener {
         document.put("in_reply_to_status_id", status.getInReplyToStatusId());
         document.put("in_reply_to_user_id", status.getInReplyToUserId());
         document.put("language", status.getLang());
+        document.put("source", status.getSource());
+        document.put("withheld_in_countries", status.getWithheldInCountries());
+        document.put("favorited", status.isFavorited());
+        document.put("possibly_sensitive", status.isPossiblySensitive());
+        document.put("retweet", status.isRetweet());
+        document.put("retweeted", status.isRetweeted());
+        document.put("retweeted_by_me", status.isRetweetedByMe());
+        document.put("truncated", status.isTruncated());
         Place place = status.getPlace();
         if (place != null) {
             document.put("place_id", status.getPlace().getId());
-//              if(status.getPlace().getBoundingBoxCoordinates() != null) {
-//                  for (int i = 1; i <= status.getPlace().getBoundingBoxCoordinates().length; i++) {
-//                      document.put("contributor_" + i, status.getPlace().getBoundingBoxCoordinates()[i-1]);
-//                  }
-//              }
-            //document.put("bounding_box_coordinates", status.getPlace().getBoundingBoxCoordinates());
             document.put("place_name", status.getPlace().getName());
             document.put("place_url", status.getPlace().getURL());
             document.put("bounding_box_type", status.getPlace().getBoundingBoxType());
@@ -102,14 +104,7 @@ public class TwitterStatusListener {
             document.put("place_type", status.getPlace().getPlaceType());
             document.put("street_address", status.getPlace().getStreetAddress());
         }
-            document.put("source", status.getSource());
-            document.put("withheld_in_countries", status.getWithheldInCountries());
-            document.put("favorited", status.isFavorited());
-            document.put("possibly_sensitive", status.isPossiblySensitive());
-            document.put("retweet", status.isRetweet());
-            document.put("retweeted", status.isRetweeted());
-            document.put("retweeted_by_me", status.isRetweetedByMe());
-            document.put("truncated", status.isTruncated());
+
 //              document.put("quoted_status_is_truncated", status.getQuotedStatus());
 //              document.put("quoted_status_id", status.getQuotedStatusId());
 //              document.put("quoted_status_permalink_display_url", status.getQuotedStatusPermalink().getDisplayURL());
