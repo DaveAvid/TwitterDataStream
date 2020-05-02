@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org/" lang="en">
+<head>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-0 py-md-0" th:fragment="navbar">
+        <a class="navbar-brand" th:href="@{/}">
+            <span class="navbarTitle">Twitter Data Stream</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="tweets.html" th:href="@{/tweets}" th:classappend="${#httpServletRequest.getRequestURI() == '/tweets' ? 'active':''}">Tweets <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link" href="users.html" th:href="@{/users}" th:classappend="${#httpServletRequest.getRequestURI() == '/users' ? 'active':''}">Users</a>
+                </li>
+            </ul>
+        </div>
+        <noscript>Your browser doesn't support javascript, some elements of this page may not render properly</noscript>
+    </nav>
+</body>
+</html>

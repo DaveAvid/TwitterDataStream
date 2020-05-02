@@ -1,0 +1,169 @@
+
+.table-fixed tbody {
+    height: 800px;
+    overflow: scroll;
+    width: 100%;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+    display: block;
+}
+
+.table-fixed tbody td,
+.table-fixed tbody th,
+.table-fixed thead > tr > th {
+    float: left;
+    position: relative;
+
+    &::after {
+        content: '';
+        clear: both;
+        display: block;
+    }
+}
+
+
+body {
+    background: #74ebd5;
+    background: -webkit-linear-gradient(to right, #74ebd5, #ACB6E5);
+    background: linear-gradient(to right, #74ebd5, #ACB6E5);
+    min-height: 100vh;
+
+}
+
+/* Header/Blog Title */
+.header {
+    /*padding: 30px;*/
+    text-align: center;
+    background: white;
+}
+
+.header h1 {
+    font-size: 50px;
+}
+/* Left column */
+.leftcolumn {
+    float: left;
+    width: 50%;
+}
+
+/* Right column */
+.rightcolumn {
+    float: left;
+    width: 50%;
+    background-color: white;
+    padding-left: 20px;
+}
+
+.center {
+    margin: auto;
+}
+
+.section {
+    max-width: 75rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #cacaca;
+}
+
+.titleimage {
+    height: 25rem;
+    float: right;
+}
+
+.marginleft {
+    margin-left: 10px;
+}
+
+.container {
+    padding-top: 75px;
+}
+
+
+/* Add a card effect for articles */
+.img-card {
+    background-color: white;
+    margin-top: 20px;
+}
+
+
+.img-card img:hover {
+    opacity: 0.75;
+}
+
+.caraImg {
+    max-height: 500px;
+}
+
+.txt-card {
+    background-color: white;
+    padding: 20px;
+    margin-top: 5px;
+}
+
+
+
+/* Footer */
+.footer {
+    padding: 20px;
+    text-align: center;
+    color: white;
+    background: #BBDDE7;
+    margin-top: 20px;
+}
+
+.adaCompliance {
+    position: absolute;
+    top: -40px;
+    left: 0px;
+}
+
+
+
+/* IATSE logo */
+#logo {
+    width: 22em;
+    padding-top: 1.5em;
+    padding-left: 4em;
+    position: absolute;
+}
+
+/* Navbar style */
+.topnav {
+    float: right;
+    border: 1px solid white;
+    margin: 2em 2em 2em 2em;
+}
+
+.navbarLogo {
+    display: inline-block;
+    max-width: 75px;
+}
+
+.navbarTitle {
+    display: inline-block;
+}
+
+/* Navbar links */
+.topnav a {
+    color: #f2f2f2;
+    text-align: center;
+    padding: 2em .5em;
+    text-decoration: none;
+    font-size: 22px;
+    overflow: hidden;
+}
+
+.topnav a:hover {
+    color: black;
+}
+
+.topnav .active {
+    color: black;
+}
+
+

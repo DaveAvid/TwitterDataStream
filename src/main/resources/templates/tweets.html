@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org/spring-data">
+<head>
+<div th:replace="fragments/header :: header"></div>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <meta charset="UTF-8">
+    <title>Twitter Tweet Data Table</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"> </div>
+<!-- For demo purpose -->
+<div class="container text-center text-white">
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg-9 mx-auto bg-white rounded shadow">
+
+                <!-- Fixed header table-->
+                <div class="table-responsive">
+                    <table class="table table-fixed">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="col-3">User Handle</th>
+                            <th scope="col" class="col-3">Tweet</th>
+                            <th scope="col" class="col-3">Created At</th>
+                            <th scope="col" class="col-3">Real Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="row: ${tweets}">
+                            <th scope="row" class="col-3" th:text="${row.screenName}">Screen Name</th>
+                            <td class="col-3" th:text="${row.name}">Name</td>
+                            <td class="col-3" th:text="${row.text}">Text</td>
+                            <td class="col-3" th:text="${row.createdAt}">Created At</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!-- End -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"> </div>
+</body>
+</html>

@@ -24,7 +24,8 @@ public class TwitterConnection {
                     .setOAuthConsumerKey(consumerKey)
                     .setOAuthConsumerSecret(consumerSecret)
                     .setOAuthAccessToken(accessToken)
-                    .setOAuthAccessTokenSecret(accessTokenSecret);
+                    .setOAuthAccessTokenSecret(accessTokenSecret)
+                    .setJSONStoreEnabled(true);
             return cb;
         }
     }
