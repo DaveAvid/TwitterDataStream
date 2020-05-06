@@ -24,13 +24,15 @@ public class MainApplication {
 	TwitterStatusListener twitterListener;
 	@Autowired
 	MongoConnection mongoConnection;
+	@Autowired
+	MongoAccess mongoAccess;
 	@PostConstruct
 	public void establishTwitterStream() {
 
 		log.info("Starting Twitter Connection Stream...");
 		twitterListener.establishTwitterStreamHandler();
 		log.info("Connection Established.");
-		MongoCollection<Document> tweets = mongoConnection.getMongoDatabase().getCollection("tweets");
+		MongoCollection<Document> tweets = mongoConnection.getMongoDatabase().getCollection("tweets_added");
 
 
 	}

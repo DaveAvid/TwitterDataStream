@@ -3,11 +3,13 @@ package com.twitterstream;
 import com.google.gson.Gson;
 import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.util.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.BSONObject;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import twitter4j.*;
 import twitter4j.json.DataObjectFactory;
@@ -19,10 +21,17 @@ public class TwitterStatusListener {
     MongoConnection mongoConnection;
     @Autowired
     TwitterConnection twitterConnection;
+    @Value("${delete_database_at_startup}")
+    boolean deleteDatabaseAtStartup;
 
     public TwitterStream establishTwitterStreamHandler() {
+        if(deleteDatabaseAtStartup){
+            mongoConnection.getMongoDatabase().getCollection("tweets_added").drop();
+            mongoConnection.getMongoDatabase().getCollection("tweets_deleted").drop();
+        }
         if (mongoConnection.getMongoDatabase().getCollection("tweets_added") == null) {
             mongoConnection.getMongoDatabase().createCollection("tweets_added");
+            mongoConnection.getMongoDatabase().getCollection("tweets_added").createIndex(Indexes.descending("timestamp_ms"));
         }
         if (mongoConnection.getMongoDatabase().getCollection("tweets_deleted") == null) {
             mongoConnection.getMongoDatabase().createCollection("tweets_deleted");

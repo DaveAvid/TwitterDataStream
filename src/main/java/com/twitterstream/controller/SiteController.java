@@ -1,7 +1,11 @@
 package com.twitterstream.controller;
 
+import com.twitterstream.MongoAccess;
 import com.twitterstream.model.Tweet;
+import com.twitterstream.model.TweetSearchText;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,22 +16,46 @@ import java.util.List;
 @Controller
 @Slf4j
 public class SiteController {
+    @Autowired
+    MongoAccess mongoAccess;
 
     @GetMapping("/")
     public String showIndex(Model model) {
+        List<Document> myList = mongoAccess.findAllToArray();
         List<Tweet> tweetList = new ArrayList<>();
-        Tweet tweetOne = Tweet.builder().name("Bob Dole").screenName("Dole").createdAt("04-25-2020").text("This mongo shit sucks").build();
-        Tweet tweetTwo = Tweet.builder().name("Ross Peru").screenName("Ross").createdAt("04-25-2020").text("This mongo shit sucks").build();
-        tweetList.add(tweetOne);
-        tweetList.add(tweetTwo);
+        for(Document record: myList){
+            Tweet tweet = new Tweet();
+            tweet.setName(record.get("user",Document.class).getString("name"));
+            tweet.setScreenName(record.get("user",Document.class).getString("screen_name"));
+            tweet.setText(record.getString("text"));
+            tweet.setCreatedAt(record.getString("created_at"));
+            //tweet.setText("test");
+
+            tweetList.add(tweet);
+        }
         model.addAttribute("tweets",tweetList);
-        return "tweets";}
+        model.addAttribute("tweet",new TweetSearchText());
+        return "index";}
 
     @GetMapping("/users")
     public String showUsers() {return "users";}
 
     @GetMapping("/tweets")
-    public String showTweets() {return "tweets";}
+    public String showTweets(Model model){
+    List<Document> myList = mongoAccess.findAllToArray();
+    List<Tweet> tweetList = new ArrayList<>();
+        for(Document record: myList){
+        Tweet tweet = new Tweet();
+        tweet.setName(record.get("user",Document.class).getString("name"));
+        tweet.setScreenName(record.get("user",Document.class).getString("screen_name"));
+        tweet.setText(record.getString("text"));
+        tweet.setCreatedAt(record.getString("created_at"));
+        //tweet.setText("test");
+
+        tweetList.add(tweet);
+    }
+        model.addAttribute("tweets",tweetList);
+        return "tweets";}
 //    @RequestMapping("/tweets")
 //    public String list(ModelMap model, @SortDefault("username") Pageable pageable){
 //        //model.addAttribute("page", userService.find(pageable));
