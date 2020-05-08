@@ -2,98 +2,56 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org/spring-data">
 <head>
     <div th:replace="fragments/header :: header"></div>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
     <meta charset="UTF-8">
-    <title>Twitter User Data Table</title>
+    <title>Twitter Tweet Data Table</title>
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"> </div>
 <!-- For demo purpose -->
 <div class="container text-center text-white">
-    <div class="container py-5">
-        <div class="row">
-            <div class="col-lg-7 mx-auto bg-white rounded shadow">
+    <div class="container py-3">
+        <div class="container-fluid" id="content">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+        <form th:action="@{/searchUsers}" th:object="${name}" method="post">
 
-                <!-- Fixed header table-->
-                <div class="table-responsive">
-                    <table class="table table-fixed">
-                        <thead>
-                        <tr>
-                            <th scope="col" class="col-3">#</th>
-                            <th scope="col" class="col-3">First</th>
-                            <th scope="col" class="col-3">Last</th>
-                            <th scope="col" class="col-3">Handle</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row" class="col-3">1</th>
-                            <td class="col-3">Mark</td>
-                            <td class="col-3">Otto</td>
-                            <td class="col-3">@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">2</th>
-                            <td class="col-3">Jacob</td>
-                            <td class="col-3">Thornton</td>
-                            <td class="col-3">@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">3</th>
-                            <td colspan="2" class="col-6">Larry the Bird</td>
-                            <td class="col-3">@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">4</th>
-                            <td class="col-3">Martin</td>
-                            <td class="col-3">Williams</td>
-                            <td class="col-3">@Marty</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">5</th>
-                            <td colspan="2" class="col-3">Sam</td>
-                            <td colspan="2" class="col-3">Pascal</td>
-                            <td class="col-3">@sam</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">6</th>
-                            <td class="col-3">John</td>
-                            <td class="col-3">Green</td>
-                            <td class="col-3">@john</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">7</th>
-                            <td colspan="2" class="col-3">David</td>
-                            <td colspan="2" class="col-3">Bowie</td>
-                            <td class="col-3">@david</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">8</th>
-                            <td class="col-3">Pedro</td>
-                            <td class="col-3">Rodriguez</td>
-                            <td class="col-3">@rod</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">5</th>
-                            <td colspan="2" class="col-3">Sam</td>
-                            <td colspan="2" class="col-3">Pascal</td>
-                            <td class="col-3">@sam</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">10</th>
-                            <td class="col-3">Jacob</td>
-                            <td class="col-3">Thornton</td>
-                            <td class="col-3">@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="col-3">11</th>
-                            <td colspan="2" class="col-6">Larry the Bird</td>
-                            <td class="col-3">@twitter</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div><!-- End -->
-
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('searchText')}? 'has-error':''">
+                <label for="searchText" class="control-label">Enter a screen name</label> <input
+                    id="searchText" class="form-control" th:field="*{searchText}" />
+                <p class="error-message"
+                   th:each="error: ${#fields.errors('searchText')}"
+                   th:text="${error}">Validation error</p>
             </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Search</button>
+            </div>
+        </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 mx-auto bg-white rounded shadow">
+                <!-- Fixed header table-->
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <th class="col-3">User Handle</th>
+                        <th class="col-3">Tweet</th>
+                        <th class="col-3">Display Name</th>
+                        <th class="col-3">Created At</th>
+                    </tr>
+                    </thead>
+                    <tr th:each="row: ${tweets}">
+                        <th scope="row" class="col-3" th:text="${row.screenName}">Screen Name</th>
+                        <td class="name" th:text="${row.text}">Text</td>
+                        <td class="col-3" th:text="${row.name}">Name</td>
+                        <td class="col-3" th:text="${row.createdAt}">Created At</td>
+                    </tr>
+                </table>
+            </div><!-- End -->
         </div>
     </div>
 </div>

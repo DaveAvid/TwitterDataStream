@@ -1,8 +1,8 @@
 package com.twitterstream.controller;
 
 import com.twitterstream.MongoAccess;
-import com.twitterstream.model.Tweet;
 import com.twitterstream.model.SearchText;
+import com.twitterstream.model.Tweet;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
@@ -19,13 +19,13 @@ import java.util.List;
 
 @Controller
 @Slf4j
-public class TweetSearchController {
+public class UserSearchController {
     @Autowired
     MongoAccess mongoAccess;
 
-    @PostMapping("/searchTweets")
-    public String searchTweets(@ModelAttribute("tweet") @Valid SearchText searchText,
-                               BindingResult result, Model model) {
+    @PostMapping("/searchUsers")
+    public String searchUsers(@ModelAttribute("name") @Valid SearchText searchText,
+                              BindingResult result, Model model) {
         List<String> keywords = new ArrayList<>();
         if (searchText.getSearchText().contains(",")) {
             String[] splitSearchText = searchText.getSearchText().split(",");
@@ -35,7 +35,7 @@ public class TweetSearchController {
         } else {
             keywords.add(StringUtils.strip(searchText.getSearchText()));
         }
-        List<Document> myList = mongoAccess.findTweetsByKeyword(keywords);
+        List<Document> myList = mongoAccess.findTweetsByScreenName(keywords);
         List<Tweet> tweetList = new ArrayList<>();
         for (Document record : myList) {
             Tweet tweet = new Tweet();
@@ -46,7 +46,7 @@ public class TweetSearchController {
             tweetList.add(tweet);
         }
         model.addAttribute("tweets", tweetList);
-        log.debug("Searching for keywords within tweets: {}", searchText.getSearchText());
-        return "index";
+        log.debug("Searching for users within tweets_added: {}", searchText.getSearchText());
+        return "users";
     }
 }

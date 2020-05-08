@@ -10,23 +10,24 @@ import twitter4j.conf.ConfigurationBuilder;
 @Service
 @Slf4j
 public class TwitterConnection {
-        @Value("${oauth.consumerKey}")
-        private String consumerKey;
-        @Value("${oauth.consumerSecret}")
-        private String consumerSecret;
-        @Value("${oauth.accessToken}")
-        private String accessToken;
-        @Value("${oauth.accessTokenSecret}")
-        private String accessTokenSecret;
-        public ConfigurationBuilder configurationBuilder() {
-            ConfigurationBuilder cb = new ConfigurationBuilder();
-            cb.setDebugEnabled(true)
-                    .setOAuthConsumerKey(consumerKey)
-                    .setOAuthConsumerSecret(consumerSecret)
-                    .setOAuthAccessToken(accessToken)
-                    .setOAuthAccessTokenSecret(accessTokenSecret)
-                    .setJSONStoreEnabled(true);
-            return cb;
-        }
+    @Value("${oauth.consumerKey}")
+    private String consumerKey;
+    @Value("${oauth.consumerSecret}")
+    private String consumerSecret;
+    @Value("${oauth.accessToken}")
+    private String accessToken;
+    @Value("${oauth.accessTokenSecret}")
+    private String accessTokenSecret;
+
+    public ConfigurationBuilder configurationBuilder() {
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(consumerKey)
+                .setOAuthConsumerSecret(consumerSecret)
+                .setOAuthAccessToken(accessToken)
+                .setOAuthAccessTokenSecret(accessTokenSecret)
+                .setJSONStoreEnabled(true);
+        return cb;
     }
+}
 

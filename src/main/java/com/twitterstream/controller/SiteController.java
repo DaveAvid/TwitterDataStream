@@ -2,7 +2,7 @@ package com.twitterstream.controller;
 
 import com.twitterstream.MongoAccess;
 import com.twitterstream.model.Tweet;
-import com.twitterstream.model.TweetSearchText;
+import com.twitterstream.model.SearchText;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,39 +23,52 @@ public class SiteController {
     public String showIndex(Model model) {
         List<Document> myList = mongoAccess.findAllToArray();
         List<Tweet> tweetList = new ArrayList<>();
-        for(Document record: myList){
+        for (Document record : myList) {
             Tweet tweet = new Tweet();
-            tweet.setName(record.get("user",Document.class).getString("name"));
-            tweet.setScreenName(record.get("user",Document.class).getString("screen_name"));
+            tweet.setName(record.get("user", Document.class).getString("name"));
+            tweet.setScreenName(record.get("user", Document.class).getString("screen_name"));
             tweet.setText(record.getString("text"));
             tweet.setCreatedAt(record.getString("created_at"));
-            //tweet.setText("test");
-
             tweetList.add(tweet);
         }
-        model.addAttribute("tweets",tweetList);
-        model.addAttribute("tweet",new TweetSearchText());
-        return "index";}
+        model.addAttribute("tweets", tweetList);
+        model.addAttribute("tweet", new SearchText());
+        return "index";
+    }
 
     @GetMapping("/users")
-    public String showUsers() {return "users";}
+    public String showUsers(Model model) {
+        List<Document> myList = mongoAccess.findAllToArray();
+        List<Tweet> tweetList = new ArrayList<>();
+        for (Document record : myList) {
+            Tweet tweet = new Tweet();
+            tweet.setName(record.get("user", Document.class).getString("name"));
+            tweet.setScreenName(record.get("user", Document.class).getString("screen_name"));
+            tweet.setText(record.getString("text"));
+            tweet.setCreatedAt(record.getString("created_at"));
+            tweetList.add(tweet);
+        }
+        model.addAttribute("tweets", tweetList);
+        model.addAttribute("name", new SearchText());
+        return "users";
+    }
 
     @GetMapping("/tweets")
-    public String showTweets(Model model){
-    List<Document> myList = mongoAccess.findAllToArray();
-    List<Tweet> tweetList = new ArrayList<>();
-        for(Document record: myList){
-        Tweet tweet = new Tweet();
-        tweet.setName(record.get("user",Document.class).getString("name"));
-        tweet.setScreenName(record.get("user",Document.class).getString("screen_name"));
-        tweet.setText(record.getString("text"));
-        tweet.setCreatedAt(record.getString("created_at"));
-        //tweet.setText("test");
-
-        tweetList.add(tweet);
+    public String showTweets(Model model) {
+        List<Document> myList = mongoAccess.findAllToArray();
+        List<Tweet> tweetList = new ArrayList<>();
+        for (Document record : myList) {
+            Tweet tweet = new Tweet();
+            tweet.setName(record.get("user", Document.class).getString("name"));
+            tweet.setScreenName(record.get("user", Document.class).getString("screen_name"));
+            tweet.setText(record.getString("text"));
+            tweet.setCreatedAt(record.getString("created_at"));
+            tweetList.add(tweet);
+        }
+        model.addAttribute("tweets", tweetList);
+        model.addAttribute("tweet", new SearchText());
+        return "tweets";
     }
-        model.addAttribute("tweets",tweetList);
-        return "tweets";}
 //    @RequestMapping("/tweets")
 //    public String list(ModelMap model, @SortDefault("username") Pageable pageable){
 //        //model.addAttribute("page", userService.find(pageable));

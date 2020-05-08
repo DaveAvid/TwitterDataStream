@@ -25,7 +25,7 @@ public class TwitterStatusListener {
     boolean deleteDatabaseAtStartup;
 
     public TwitterStream establishTwitterStreamHandler() {
-        if(deleteDatabaseAtStartup){
+        if (deleteDatabaseAtStartup) {
             mongoConnection.getMongoDatabase().getCollection("tweets_added").drop();
             mongoConnection.getMongoDatabase().getCollection("tweets_deleted").drop();
         }

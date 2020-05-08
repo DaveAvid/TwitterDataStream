@@ -11,6 +11,10 @@
 <!-- For demo purpose -->
 <div class="container text-center text-white">
     <div class="container py-3">
+        <div class="container-fluid" id="content">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
 
         <form th:action="@{/searchTweets}" th:object="${tweet}" method="post">
 
@@ -26,39 +30,10 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Search</button>
             </div>
-
         </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            </div>
+        </div>
+    </div>
         <div class="row">
             <div class="col-lg-12 mx-auto bg-white rounded shadow">
                 <!-- Fixed header table-->
@@ -73,7 +48,7 @@
                         </thead>
                         <tr th:each="row: ${tweets}">
                             <th scope="row" class="col-3" th:text="${row.screenName}">Screen Name</th>
-                            <td class="col-3" th:text="${row.text}">Text</td>
+                            <td class="name" th:text="${row.text}">Text</td>
                             <td class="col-3" th:text="${row.name}">Name</td>
                             <td class="col-3" th:text="${row.createdAt}">Created At</td>
                         </tr>

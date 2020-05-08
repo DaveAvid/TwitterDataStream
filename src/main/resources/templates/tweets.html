@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.thymeleaf.org/spring-data">
 <head>
-<div th:replace="fragments/header :: header"></div>
+    <div th:replace="fragments/header :: header"></div>
     <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
     <meta charset="UTF-8">
     <title>Twitter Tweet Data Table</title>
@@ -11,32 +11,49 @@
 <!-- For demo purpose -->
 <div class="container text-center text-white">
     <div class="container py-3">
-        <div class="row">
-            <div class="col-lg-9 mx-auto bg-white rounded shadow">
+        <div class="container-fluid" id="content">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
 
-                <!-- Fixed header table-->
-                <div class="table-responsive">
-                    <table class="table table-fixed">
-                        <thead>
-                        <tr>
-                            <th scope="col" class="col-3">User Handle</th>
-                            <th scope="col" class="col-3">Tweet</th>
-                            <th scope="col" class="col-3">Created At</th>
-                            <th scope="col" class="col-3">Real Name</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="row: ${tweets}">
-                            <th scope="row" class="col-3" th:text="${row.screenName}">Screen Name</th>
-                            <td class="col-3" th:text="${row.name}">Name</td>
-                            <td class="col-3" th:text="${row.text}">Text</td>
-                            <td class="col-3" th:text="${row.createdAt}">Created At</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div><!-- End -->
+                    <form th:action="@{/searchTweets}" th:object="${tweet}" method="post">
 
+                        <div class="form-group"
+                             th:classappend="${#fields.hasErrors('searchText')}? 'has-error':''">
+                            <label for="searchText" class="control-label">Enter keywords, seperated</label> <input
+                                id="searchText" class="form-control" th:field="*{searchText}" />
+                            <p class="error-message"
+                               th:each="error: ${#fields.errors('searchText')}"
+                               th:text="${error}">Validation error</p>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </div>
+                    </form>
+                </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 mx-auto bg-white rounded shadow">
+                <!-- Fixed header table-->
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <th class="col-3">User Handle</th>
+                        <th class="col-3">Tweet</th>
+                        <th class="col-3">Display Name</th>
+                        <th class="col-3">Created At</th>
+                    </tr>
+                    </thead>
+                    <tr th:each="row: ${tweets}">
+                        <th scope="row" class="col-3" th:text="${row.screenName}">Screen Name</th>
+                        <td class="name" th:text="${row.text}">Text</td>
+                        <td class="col-3" th:text="${row.name}">Name</td>
+                        <td class="col-3" th:text="${row.createdAt}">Created At</td>
+                    </tr>
+                </table>
+            </div><!-- End -->
         </div>
     </div>
 </div>
